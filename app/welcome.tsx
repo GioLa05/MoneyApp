@@ -1,5 +1,6 @@
 import MainButton from "@/components/MainButton";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function Welcome() {
@@ -80,8 +81,8 @@ export default function Welcome() {
         </Text>
       </View>
       <View style={styles.buttonsContainer}>
-        <MainButton text="Sign In" onPress={() => {}} />
-        <MainButton text="Sign Up" onPress={() => {}} />
+        <MainButton text="Sign In" onPress={() => router.push("/signIn")} />
+        <MainButton text="Sign Up" onPress={() => router.push("/signUp")} />
       </View>
     </View>
   );

@@ -1,0 +1,285 @@
+import MainButton from "@/components/MainButton";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { 
+  Image, 
+  StyleSheet, 
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard 
+} from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  HelperText,
+  Provider as PaperProvider,
+  Snackbar,
+  Text,
+  TextInput,
+} from "react-native-paper";
+
+const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  // Validate email format
+  const validateEmail = (text: string) => {
+    const isValid = /\S+@\S+\.\S+/.test(text);
+    setEmailError(!isValid);
+    return isValid;
+  };
+
+  // Validate password
+  const validatePassword = (text: string) => {
+    const isValid = text.length >= 6;
+    setPasswordError(!isValid);
+    return isValid;
+  };
+
+  const handleSignIn = async () => {
+    // Validate inputs first
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
+    
+    if (!isEmailValid || !isPasswordValid) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      
+      // Simulate API call with timeout
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // In a real app, you would make an API call here
+      // const response = await signInWithEmailAndPassword(email, password);
+      
+      console.log("Sign in with:", email, password);
+      setSnackbarMessage("Sign in successful!");
+      setSnackbarVisible(true);
+      
+      // Navigate after successful login
+      setTimeout(() => {
+        router.push("/welcome"); // Use an existing route in your app
+      }, 1000);
+      
+    } catch (error) {
+      setSnackbarMessage("Sign in failed. Please try again.");
+      setSnackbarVisible(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <PaperProvider>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView 
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <Image
+              source={require("../assets/images/circles.png")}
+              style={styles.backgroundImage}
+            />
+
+            <View style={styles.contentContainer}>
+              <Text style={styles.title}>Sign In</Text>
+              <View style={styles.formContainer}>
+            <TextInput
+              label="Email Address"
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                // Only validate after user has started typing
+                if (email.length > 0) validateEmail(text);
+                else setEmailError(false);
+              }}
+              style={styles.input}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onFocus={() => {
+                // Clear error when focused
+                setEmailError(false);
+              }}
+              onBlur={() => {
+                // Validate only if there's input
+                if (email.length > 0) validateEmail(email);
+              }}
+              error={emailError}
+              mode="flat"
+              underlineColor="#2743FD"
+              activeUnderlineColor="#2743FD"
+              underlineStyle={{ height: 1 }}
+            />
+            
+            {emailError && (
+              <HelperText type="error" visible={emailError}>
+                Please enter a valid email address
+              </HelperText>
+            )}
+           
+
+            <TextInput
+              label="Password"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                // Only validate if user has started typing
+                if (password.length > 0) validatePassword(text);
+                else setPasswordError(false);
+              }}
+              secureTextEntry={secureTextEntry}
+              style={styles.input}
+              mode="flat"
+              underlineColor="#2743FD"
+              activeUnderlineColor="#2743FD"
+              underlineStyle={{ height: 1 }}
+              onFocus={() => {
+                // Clear error when focused
+                setPasswordError(false);
+              }}
+              onBlur={() => {
+                // Validate only if there's input
+                if (password.length > 0) validatePassword(password);
+              }}
+              error={passwordError}
+              right={
+                <TextInput.Icon
+                  icon={secureTextEntry ? "eye" : "eye-off"}
+                  onPress={() => setSecureTextEntry(!secureTextEntry)}
+                  color="#292929"
+                />
+              }
+            />
+            
+            {passwordError && (
+              <HelperText type="error" visible={passwordError}>
+                Password must be at least 6 characters
+              </HelperText>
+            )}
+
+            <Button
+              mode="text"
+              style={styles.forgotPassword}
+              labelStyle={{ color: "#7C2AFF" }}
+              onPress={() => console.log("Forgot password")}
+            >
+              Forgot Password?
+            </Button>
+
+            <View style={styles.buttonContainer}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color="#2743FD" />
+              ) : (
+                <MainButton text="Sign In" onPress={handleSignIn} />
+              )}
+            </View>
+
+            <View style={styles.signupContainer}>
+              <Text style={styles.signupText}>Don&apos;t have an account?</Text>
+              <Button 
+                mode="text" 
+                labelStyle={styles.signupButton} 
+                onPress={() => router.push('/signUp')}
+              >
+                Sign Up
+              </Button>
+            </View>
+          </View>
+        </View>
+      </View>
+      
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={3000}
+        style={styles.snackbar}
+        action={{
+          label: 'OK',
+          onPress: () => setSnackbarVisible(false),
+        }}
+      >
+        {snackbarMessage}
+      </Snackbar>
+    </PaperProvider>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  backgroundImage: {
+    width: 435,
+    height: 400,
+    resizeMode: "contain",
+    position: "absolute",
+    top: -100,
+    left: -60,
+  },
+  contentContainer: {
+    paddingTop: 430,
+    paddingHorizontal: 35,
+    flex: 1,
+  },
+  title: {
+    fontFamily: "Montserrat",
+    fontWeight: "700",
+    fontSize: 36,
+    lineHeight: 36,
+    letterSpacing: 0,
+    color: "#3A3A3A",
+    marginBottom: 40,
+    paddingLeft: 10,
+  },
+  formContainer: {
+    gap: 20,
+  },
+  input: {
+    backgroundColor: "white",
+    marginBottom: 10,
+  },
+  forgotPassword: {
+    alignSelf: "flex-end",
+    marginTop: -10,
+  },
+  buttonContainer: {
+    marginTop: 30,
+  },
+  signupContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  signupText: {
+    fontFamily: "Inter_400Regular",
+    color: "#3A3A3A",
+  },
+  signupButton: {
+    color: "#2A46FF",
+    fontWeight: "600",
+  },
+  snackbar: {
+    backgroundColor: "#292929",
+  }
+});
+
+export default SignIn;
