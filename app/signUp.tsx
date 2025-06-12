@@ -264,7 +264,7 @@ const SignUp = () => {
               {isLoading ? (
                 <ActivityIndicator size="large" color="#2743FD" />
               ) : (
-                <MainButton text="Sign Up" onPress={handleSignUp} />
+                <MainButton text="Sign Up inside tsx" onPress={handleSignUp} />
               )}
             </Animated.View>
           </Animated.View>

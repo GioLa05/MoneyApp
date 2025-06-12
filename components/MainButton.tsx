@@ -19,7 +19,9 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
           styles.shadowContainer, // Apply shadow styles here
           {
             width:
-              text === "Sign In" || text === "Sign Up"
+              text === "Sign In" ||
+              text === "Sign Up" ||
+              text === "Sign Up inside tsx"
                 ? "100%"
                 : text === "Get Started"
                 ? 189
@@ -43,9 +45,17 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
                 text === "Get Started" ? "center" : "space-between",
               width: "100%", // LinearGradient fills the shadowContainer
               paddingHorizontal:
-                text === "Sign In" || text === "Sign Up" ? 24 : 24,
+                text === "Sign In" ||
+                text === "Sign Up" ||
+                text === "Sign Up inside tsx"
+                  ? 24
+                  : 24,
               paddingVertical:
-                text === "Sign In" || text === "Sign Up" ? 24 : 20,
+                text === "Sign In" ||
+                text === "Sign Up" ||
+                text === "Sign Up inside tsx"
+                  ? 24
+                  : 20,
             },
           ]}
         >
@@ -82,7 +92,7 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
               { color: text === "Sign Up" ? "#556BFF" : "#fff" },
             ]}
           >
-            {text}
+            {text === "Sign Up inside tsx" ? "Sign Up" : text}
           </Text>
           {text !== "Get Started" && (
             <ArrowIcon
