@@ -42,6 +42,10 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
               justifyContent:
                 text === "Get Started" ? "center" : "space-between",
               width: "100%", // LinearGradient fills the shadowContainer
+              paddingHorizontal:
+                text === "Sign In" || text === "Sign Up" ? 24 : 24,
+              paddingVertical:
+                text === "Sign In" || text === "Sign Up" ? 24 : 20,
             },
           ]}
         >

@@ -27,13 +27,13 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [focused, setFocused] = useState(false);
   // Define ref with correct typing for TextInput
   const passwordInputRef = useRef<any>(null);
 
   // Animation values for sliding content and background
   const translateY = useRef(new Animated.Value(0)).current;
   const backgroundTranslateY = useRef(new Animated.Value(0)).current;
+  const buttonTranslateY = useRef(new Animated.Value(0)).current;
 
   // Validate email format
   const validateEmail = (text: string) => {
@@ -44,22 +44,27 @@ const SignIn = () => {
 
   // Validate password
   const validatePassword = (text: string) => {
-    const isValid = text.length >= 6;
+    const hasSpecialChar = /[!@*]/.test(text);
+    const isValid = text.length >= 6 && hasSpecialChar;
     setPasswordError(!isValid);
     return isValid;
   };
 
   // Animation to slide content up when input is focused
   const slideUp = () => {
-    setFocused(true);
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: -200,
+        toValue: -150,
         duration: 300,
         useNativeDriver: true,
       }),
       Animated.timing(backgroundTranslateY, {
-        toValue: -200, // Move background up too, but less than content
+        toValue: -150, // Move background up too, but less than content
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonTranslateY, {
+        toValue: -150, // Move button up by 150px
         duration: 300,
         useNativeDriver: true,
       }),
@@ -68,7 +73,6 @@ const SignIn = () => {
 
   // Animation to slide content back when input loses focus
   const slideDown = () => {
-    setFocused(false);
     Keyboard.dismiss();
     Animated.parallel([
       Animated.timing(translateY, {
@@ -77,6 +81,11 @@ const SignIn = () => {
         useNativeDriver: true,
       }),
       Animated.timing(backgroundTranslateY, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonTranslateY, {
         toValue: 0,
         duration: 300,
         useNativeDriver: true,
@@ -176,7 +185,17 @@ const SignIn = () => {
                     underlineColor="#2743FD"
                     activeUnderlineColor="#2743FD"
                     underlineStyle={{ height: 1 }}
+                    right={
+                      email.length > 0 && !emailError ? (
+                        <TextInput.Icon icon="check" color="#CB3EF9" />
+                      ) : null
+                    }
                   />
+                  {emailError && (
+                    <Text style={styles.errorText}>
+                      The email address is incomplete.
+                    </Text>
+                  )}
 
                   <TextInput
                     label="Password"
@@ -215,29 +234,39 @@ const SignIn = () => {
                       />
                     }
                   />
+                  {passwordError && (
+                    <Text style={styles.errorText}>
+                      Must contain special characters - !, @, *
+                    </Text>
+                  )}
 
                   <Button
                     mode="text"
                     style={styles.forgotPassword}
-                    labelStyle={{ color: "#7C2AFF" }}
+                    labelStyle={{ color: "#2B47FC" }}
                     onPress={() => console.log("Forgot password")}
                   >
                     Forgot Password?
                   </Button>
 
-                  <View style={styles.buttonContainer}>
-                    {isLoading ? (
-                      <ActivityIndicator size="large" color="#2743FD" />
-                    ) : (
-                      <MainButton text="Sign In" onPress={handleSignIn} />
-                    )}
-                  </View>
-
                   {/* Add padding at bottom to ensure keyboard doesn't cover content */}
-                  <View style={{ paddingBottom: 40 }} />
+                  <View style={{ paddingBottom: 120 }} />
                 </View>
               </View>
             </ScrollView>
+            {/* Button container that moves with content */}
+            <Animated.View
+              style={[
+                styles.bottomButtonContainer,
+                { transform: [{ translateY: buttonTranslateY }] },
+              ]}
+            >
+              {isLoading ? (
+                <ActivityIndicator size="large" color="#2743FD" />
+              ) : (
+                <MainButton text="Sign In" onPress={handleSignIn} />
+              )}
+            </Animated.View>
           </Animated.View>
 
           <Snackbar
@@ -302,11 +331,23 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   forgotPassword: {
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
     marginTop: -5,
   },
   buttonContainer: {
     marginTop: 25,
+  },
+  bottomButtonContainer: {
+    paddingHorizontal: 35,
+    paddingBottom: 50,
+    paddingTop: 20,
+  },
+  errorText: {
+    color: "#FF3B30",
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 12,
+    fontFamily: "Montserrat",
   },
   signupContainer: {
     flexDirection: "row",
