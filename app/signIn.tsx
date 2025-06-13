@@ -244,7 +244,7 @@ const SignIn = () => {
                     mode="text"
                     style={styles.forgotPassword}
                     labelStyle={{ color: "#2B47FC" }}
-                    onPress={() => console.log("Forgot password")}
+                    onPress={() => router.push("/otp")}
                   >
                     Forgot Password?
                   </Button>
