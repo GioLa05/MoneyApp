@@ -7,14 +7,21 @@ interface MainButtonProps {
   text?: string;
   title?: string;
   onPress?: () => void;
+  disabled?: boolean;
 }
 
-export default function MainButton({ text, title, onPress }: MainButtonProps) {
+export default function MainButton({
+  text,
+  title,
+  onPress,
+  disabled = false,
+}: MainButtonProps) {
   const buttonText = text || title || "";
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={disabled ? undefined : onPress}
+      disabled={disabled}
       // Removed style from TouchableOpacity, it will be handled by the shadowContainer
     >
       <View
@@ -32,6 +39,7 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
                 ? 189
                 : 153,
             backgroundColor: buttonText === "Sign Up" ? "white" : "transparent",
+            opacity: disabled ? 0.5 : 1,
           },
         ]}
       >
@@ -47,7 +55,9 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
             styles.button, // This style will no longer have shadow properties
             {
               justifyContent:
-                buttonText === "Get Started" || buttonText === "Get OTP" || buttonText === "Verify"
+                buttonText === "Get Started" ||
+                buttonText === "Get OTP" ||
+                buttonText === "Verify"
                   ? "center"
                   : "space-between",
               width: "100%", // LinearGradient fills the shadowContainer
@@ -130,13 +140,15 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
           >
             {buttonText === "Sign Up inside tsx" ? "Sign Up" : buttonText}
           </Text>
-          {buttonText !== "Get Started" && buttonText !== "Get OTP" && buttonText !== "Verify" && (
-            <ArrowIcon
-              width={19}
-              height={14}
-              color={buttonText === "Sign Up" ? "#556BFF" : "#fff"}
-            />
-          )}
+          {buttonText !== "Get Started" &&
+            buttonText !== "Get OTP" &&
+            buttonText !== "Verify" && (
+              <ArrowIcon
+                width={19}
+                height={14}
+                color={buttonText === "Sign Up" ? "#556BFF" : "#fff"}
+              />
+            )}
         </LinearGradient>
       </View>
     </TouchableOpacity>
