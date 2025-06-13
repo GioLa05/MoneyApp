@@ -4,11 +4,14 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface MainButtonProps {
-  text: string;
+  text?: string;
+  title?: string;
   onPress?: () => void;
 }
 
-export default function MainButton({ text, onPress }: MainButtonProps) {
+export default function MainButton({ text, title, onPress }: MainButtonProps) {
+  const buttonText = text || title || "";
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -19,20 +22,21 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
           styles.shadowContainer, // Apply shadow styles here
           {
             width:
-              text === "Sign In" ||
-              text === "Sign Up" ||
-              text === "Sign Up inside tsx"
+              buttonText === "Sign In" ||
+              buttonText === "Sign Up" ||
+              buttonText === "Sign Up inside tsx" ||
+              buttonText === "Get OTP"
                 ? "100%"
-                : text === "Get Started"
+                : buttonText === "Get Started"
                 ? 189
                 : 153,
-            backgroundColor: text === "Sign Up" ? "white" : "transparent",
+            backgroundColor: buttonText === "Sign Up" ? "white" : "transparent",
           },
         ]}
       >
         <LinearGradient
           colors={
-            text === "Sign Up"
+            buttonText === "Sign Up"
               ? ["transparent", "transparent"]
               : ["#4960F9", "#1433FF"]
           }
@@ -42,18 +46,22 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
             styles.button, // This style will no longer have shadow properties
             {
               justifyContent:
-                text === "Get Started" ? "center" : "space-between",
+                buttonText === "Get Started" || buttonText === "Get OTP"
+                  ? "center"
+                  : "space-between",
               width: "100%", // LinearGradient fills the shadowContainer
               paddingHorizontal:
-                text === "Sign In" ||
-                text === "Sign Up" ||
-                text === "Sign Up inside tsx"
+                buttonText === "Sign In" ||
+                buttonText === "Sign Up" ||
+                buttonText === "Sign Up inside tsx" ||
+                buttonText === "Get OTP"
                   ? 24
                   : 24,
               paddingVertical:
-                text === "Sign In" ||
-                text === "Sign Up" ||
-                text === "Sign Up inside tsx"
+                buttonText === "Sign In" ||
+                buttonText === "Sign Up" ||
+                buttonText === "Sign Up inside tsx" ||
+                buttonText === "Get OTP"
                   ? 24
                   : 20,
             },
@@ -65,40 +73,65 @@ export default function MainButton({ text, onPress }: MainButtonProps) {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={
-              text === "Sign Up" ? styles.thirdGradient : styles.firstGradient
+              buttonText === "Sign Up"
+                ? styles.thirdGradient
+                : styles.firstGradient
             }
           />
 
           {/* Second/Fourth nested gradient (on top) */}
           <LinearGradient
             colors={
-              text === "Sign Up"
+              buttonText === "Sign Up"
                 ? ["rgba(199, 47, 248, 0.58)", "rgba(47, 86, 248, 0.71)"]
                 : ["#C72FF8", "rgba(198, 48, 248, 0)"]
             }
-            start={text === "Sign Up" ? { x: 1, y: 0 } : { x: 0, y: 0 }}
-            end={text === "Sign Up" ? { x: 0, y: 1 } : { x: 1, y: 1 }}
+            start={buttonText === "Sign Up" ? { x: 1, y: 0 } : { x: 0, y: 0 }}
+            end={buttonText === "Sign Up" ? { x: 0, y: 1 } : { x: 1, y: 1 }}
             style={
-              text === "Sign Up" ? styles.fourthGradient : styles.secondGradient
+              buttonText === "Sign Up"
+                ? styles.fourthGradient
+                : styles.secondGradient
             }
           />
 
+          {/* Mirrored gradients for Get OTP variant */}
+          {buttonText === "Get OTP" && (
+            <>
+              {/* Mirrored first gradient (left side) */}
+              <LinearGradient
+                colors={["#5264F9", "#3AF9EF"]}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.mirroredFirstGradient}
+              />
+
+              {/* Mirrored second gradient (left side) */}
+              <LinearGradient
+                colors={["#C72FF8", "rgba(198, 48, 248, 0)"]}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.mirroredSecondGradient}
+              />
+            </>
+          )}
+
           {/* Border view for Sign Up variant */}
-          {text === "Sign Up" && <View style={styles.borderView} />}
+          {buttonText === "Sign Up" && <View style={styles.borderView} />}
 
           <Text
             style={[
               styles.text,
-              { color: text === "Sign Up" ? "#556BFF" : "#fff" },
+              { color: buttonText === "Sign Up" ? "#556BFF" : "#fff" },
             ]}
           >
-            {text === "Sign Up inside tsx" ? "Sign Up" : text}
+            {buttonText === "Sign Up inside tsx" ? "Sign Up" : buttonText}
           </Text>
-          {text !== "Get Started" && (
+          {buttonText !== "Get Started" && buttonText !== "Get OTP" && (
             <ArrowIcon
               width={19}
               height={14}
-              color={text === "Sign Up" ? "#556BFF" : "#fff"}
+              color={buttonText === "Sign Up" ? "#556BFF" : "#fff"}
             />
           )}
         </LinearGradient>
@@ -171,6 +204,24 @@ const styles = StyleSheet.create({
     lineHeight: 20, // 100% of fontSize
     letterSpacing: 0,
     color: "#fff",
+  },
+  mirroredFirstGradient: {
+    position: "absolute",
+    width: 142,
+    height: 142,
+    top: -125,
+    left: -35,
+    borderRadius: 160,
+    transform: [{ rotate: "-13.4deg" }],
+  },
+  mirroredSecondGradient: {
+    position: "absolute",
+    width: 136,
+    height: 136,
+    top: -110,
+    left: -75,
+    borderRadius: 160,
+    transform: [{ rotate: "138.37deg" }],
   },
   borderView: {
     position: "absolute",
