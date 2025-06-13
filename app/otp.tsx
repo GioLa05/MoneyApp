@@ -12,6 +12,7 @@ import {
 
 const OTP = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const textInputRef = useRef<TextInput>(null);
 
   // Animation values for sliding content
@@ -66,8 +67,14 @@ const OTP = () => {
     const digitsOnly = filteredText.replace(/\s/g, "");
 
     // If it starts with +995 and has more than 9 total characters (+995 + 6 digits), don't allow it
-    if (digitsOnly.startsWith("+995") && digitsOnly.length > 9) {
+    // But we need to account for spaces in the display, so let's be more flexible
+    if (digitsOnly.startsWith("+995") && digitsOnly.length > 10) {
       return; // Don't update state, effectively blocking further input
+    }
+
+    // Also check the total length including spaces to prevent extremely long input
+    if (filteredText.length > 16) { // +995 XX XX XX = 12 chars, give more buffer
+      return;
     }
 
     setPhoneNumber(filteredText);
@@ -77,6 +84,7 @@ const OTP = () => {
       /^\+995\d{6}$/, // +995XXXXXX (9 digits total)
       /^\+995 \d{3} \d{3}$/, // +995 XXX XXX
       /^\+995 \d{6}$/, // +995 XXXXXX
+      /^\+995 \d{2} \d{2} \d{2}$/, // +995 XX XX XX
     ];
 
     const isComplete = phoneFormats.some((format) => format.test(filteredText));
@@ -138,7 +146,10 @@ const OTP = () => {
                 color: "#3A3A3A",
               }}
             >
-              We will send you a one-time password to this mobile number.
+              {otpSent 
+                ? `Enter the OTP sent to ${phoneNumber}`
+                : "We will send you a one-time password to this mobile number."
+              }
             </Text>
             <Text
               style={{
@@ -229,9 +240,15 @@ const OTP = () => {
           ]}
         >
           <MainButton
-            title="Get OTP"
+            title={otpSent ? "Verify" : "Get OTP"}
             onPress={() => {
-              // Handle OTP sending logic
+              if (!otpSent) {
+                // Handle OTP sending logic
+                setOtpSent(true);
+              } else {
+                // Handle OTP verification logic
+                console.log("Verifying OTP...");
+              }
             }}
           />
         </Animated.View>
