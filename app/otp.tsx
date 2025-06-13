@@ -13,6 +13,7 @@ import {
 const OTP = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const textInputRef = useRef<TextInput>(null);
 
   // Animation values for sliding content
@@ -21,6 +22,7 @@ const OTP = () => {
 
   // Animation to slide content up when input is focused
   const slideUp = () => {
+    setIsInputFocused(true);
     Animated.parallel([
       Animated.timing(translateY, {
         toValue: -150,
@@ -37,6 +39,7 @@ const OTP = () => {
 
   // Animation to slide content back when input loses focus
   const slideDown = () => {
+    setIsInputFocused(false);
     Keyboard.dismiss();
     Animated.parallel([
       Animated.timing(translateY, {
@@ -62,35 +65,32 @@ const OTP = () => {
     // Only allow numbers, spaces, and + symbol
     const filteredText = text.replace(/[^0-9+\s]/g, "");
 
-    // Check if it's trying to exceed the maximum length for +995XXXXXX format
+    // Check if it's trying to exceed the maximum length for +995XXXXXXX format
     // Remove spaces to count actual digits
     const digitsOnly = filteredText.replace(/\s/g, "");
 
-    // If it starts with +995 and has more than 9 total characters (+995 + 6 digits), don't allow it
-    // But we need to account for spaces in the display, so let's be more flexible
-    if (digitsOnly.startsWith("+995") && digitsOnly.length > 10) {
+    // Allow +995 + up to 9 digits (Georgian mobile numbers can be 9 digits)
+    // Increased limit to allow more flexibility
+    if (digitsOnly.startsWith("+995") && digitsOnly.length > 13) {
       return; // Don't update state, effectively blocking further input
     }
 
     // Also check the total length including spaces to prevent extremely long input
-    if (filteredText.length > 16) { // +995 XX XX XX = 12 chars, give more buffer
+    if (filteredText.length > 20) { // Increased buffer for more flexibility
       return;
     }
 
     setPhoneNumber(filteredText);
 
-    // Check if the phone number matches complete formats
-    const phoneFormats = [
-      /^\+995\d{6}$/, // +995XXXXXX (9 digits total)
-      /^\+995 \d{3} \d{3}$/, // +995 XXX XXX
-      /^\+995 \d{6}$/, // +995 XXXXXX
-      /^\+995 \d{2} \d{2} \d{2}$/, // +995 XX XX XX
-    ];
-
-    const isComplete = phoneFormats.some((format) => format.test(filteredText));
-
-    if (isComplete) {
-      textInputRef.current?.blur();
+    // Only auto-blur if it's a clearly complete format (9 digits after +995)
+    // Use setTimeout to avoid interfering with the input during typing
+    // Only auto-blur if the input is actually focused and user has stopped typing
+    if (isInputFocused && digitsOnly.startsWith("+995") && digitsOnly.length === 12) {
+      setTimeout(() => {
+        if (textInputRef.current?.isFocused()) {
+          textInputRef.current?.blur();
+        }
+      }, 500); // Increased delay to give user time to continue typing
     }
   };
 
@@ -119,7 +119,7 @@ const OTP = () => {
               justifyContent: "center",
               alignItems: "center",
               gap: 28, // Only works on RN 0.71+. For older RN, use marginBottom
-              paddingHorizontal: 70,
+              paddingHorizontal: otpSent ? 60 : 70,
             }}
           >
             <Text

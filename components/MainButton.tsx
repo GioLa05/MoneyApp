@@ -25,7 +25,8 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
               buttonText === "Sign In" ||
               buttonText === "Sign Up" ||
               buttonText === "Sign Up inside tsx" ||
-              buttonText === "Get OTP"
+              buttonText === "Get OTP" ||
+              buttonText === "Verify"
                 ? "100%"
                 : buttonText === "Get Started"
                 ? 189
@@ -46,7 +47,7 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
             styles.button, // This style will no longer have shadow properties
             {
               justifyContent:
-                buttonText === "Get Started" || buttonText === "Get OTP"
+                buttonText === "Get Started" || buttonText === "Get OTP" || buttonText === "Verify"
                   ? "center"
                   : "space-between",
               width: "100%", // LinearGradient fills the shadowContainer
@@ -54,14 +55,16 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
                 buttonText === "Sign In" ||
                 buttonText === "Sign Up" ||
                 buttonText === "Sign Up inside tsx" ||
-                buttonText === "Get OTP"
+                buttonText === "Get OTP" ||
+                buttonText === "Verify"
                   ? 24
                   : 24,
               paddingVertical:
                 buttonText === "Sign In" ||
                 buttonText === "Sign Up" ||
                 buttonText === "Sign Up inside tsx" ||
-                buttonText === "Get OTP"
+                buttonText === "Get OTP" ||
+                buttonText === "Verify"
                   ? 24
                   : 20,
             },
@@ -95,8 +98,8 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
             }
           />
 
-          {/* Mirrored gradients for Get OTP variant */}
-          {buttonText === "Get OTP" && (
+          {/* Mirrored gradients for Get OTP and Verify variant */}
+          {(buttonText === "Get OTP" || buttonText === "Verify") && (
             <>
               {/* Mirrored first gradient (left side) */}
               <LinearGradient
@@ -127,7 +130,7 @@ export default function MainButton({ text, title, onPress }: MainButtonProps) {
           >
             {buttonText === "Sign Up inside tsx" ? "Sign Up" : buttonText}
           </Text>
-          {buttonText !== "Get Started" && buttonText !== "Get OTP" && (
+          {buttonText !== "Get Started" && buttonText !== "Get OTP" && buttonText !== "Verify" && (
             <ArrowIcon
               width={19}
               height={14}
