@@ -109,11 +109,11 @@ const SignIn = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       console.log("Sign in with:", email, password);
-      
 
       // Navigate after successful login
       setTimeout(() => {
-        router.push("/welcome");
+        router.dismissAll();
+        router.replace("/homepage");
       }, 1000);
     } catch {
       setSnackbarMessage("Sign in failed. Please try again.");
