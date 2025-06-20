@@ -11,7 +11,7 @@ const homepage = () => {
       }}
     >
       <Image
-        source={require("../assets/images/whiteBurgerMenu.png")}
+        source={require("../../assets/images/whiteBurgerMenu.png")}
         style={{
           width: 28,
           height: 30,
@@ -23,7 +23,7 @@ const homepage = () => {
         }}
       />
       <Image
-        source={require("../assets/images/profilePicture.png")}
+        source={require("../../assets/images/profilePicture.png")}
         style={{
           width: 50,
           height: 50,
@@ -124,7 +124,7 @@ const homepage = () => {
           $850.00
         </Text>
         <Image
-          source={require("../assets/images/Columns.png")}
+          source={require("../../assets/images/Columns.png")}
           style={{
             width: "100%",
             height: 166,
@@ -134,30 +134,66 @@ const homepage = () => {
           }}
         />
       </View>
-    <LinearGradient
-      colors={["#6075FF", "#1433FF"]}
-      style={{
-        padding: 24,
-        borderRadius: 40,
-        marginHorizontal: 40,
-      }}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-        .
-    <Text
-      style={{
-      fontFamily: "Montserrat",
-      fontWeight: "400",
-      fontSize: 18,
-      lineHeight: 20,
-      letterSpacing: 0,
-      color: "#ffffff",
-      }}
-    >
-      Check Your{"\n"}Bank Accounts
-    </Text>
-    </LinearGradient>
+      <LinearGradient
+        colors={["#6075FF", "#1433FF"]}
+        style={{
+          padding: 44,
+          borderRadius: 40,
+          marginHorizontal: 40,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <LinearGradient
+          colors={["#5264F9", "#3AF9EF"]}
+          style={{
+            width: 144,
+            height: 144,
+            position: "absolute",
+            bottom: -55,
+            right: -80,
+            borderRadius: 144,
+          }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        />
+        <LinearGradient
+          colors={["rgba(199, 47, 248, 0.58)", "rgba(47, 86, 248, 0.71)"]}
+          style={{
+            width: 144,
+            height: 144,
+            position: "absolute",
+            top: -74,
+            right: -40,
+            borderRadius: 144,
+          }}
+          start={{ x: 0.2, y: 0 }}
+          end={{ x: 0.8, y: 1 }}
+        />
+        <Text
+          style={{
+            fontFamily: "Montserrat",
+            fontWeight: "400",
+            fontSize: 15,
+            lineHeight: 20,
+            letterSpacing: 0,
+            color: "#ffffff",
+          }}
+        >
+          Check Your{"\n"}Bank Accounts
+        </Text>
+        <Image
+          source={require("../../assets/images/rightArrow.png")}
+          style={{
+            width: 7,
+            height: 12,
+          }}
+        />
+      </LinearGradient>
     </View>
   );
 };

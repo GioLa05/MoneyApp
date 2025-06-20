@@ -113,7 +113,7 @@ const SignIn = () => {
       // Navigate after successful login
       setTimeout(() => {
         router.dismissAll();
-        router.replace("/homepage");
+        router.replace("/(tabs)/homepage");
       }, 1000);
     } catch {
       setSnackbarMessage("Sign in failed. Please try again.");

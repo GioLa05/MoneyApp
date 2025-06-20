@@ -413,7 +413,7 @@ const OTP = () => {
                 console.log("Verifying OTP...");
                 // Reset the navigation stack and go to homepage
                 router.dismissAll();
-                router.replace("/homepage");
+                router.replace("/(tabs)/homepage");
               }
             }}
           />

@@ -52,7 +52,7 @@ const Profile = () => {
   const handleFormComplete = () => {
     // Reset the navigation stack and go to homepage
     router.dismissAll();
-    router.replace("/homepage");
+    router.replace("/(tabs)/homepage");
   };
 
   // Handle photo selection
@@ -162,7 +162,7 @@ const Profile = () => {
             style={{
               position: "absolute",
               top: 68,
-              left: 30,
+              left: 0,
               padding: 10,
               zIndex: 10,
             }}
