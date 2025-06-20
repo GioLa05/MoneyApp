@@ -109,12 +109,10 @@ const SignUp = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       console.log("Sign up with:", email, password);
-      setSnackbarMessage("Sign up successful!");
-      setSnackbarVisible(true);
 
       // Navigate after successful signup
       setTimeout(() => {
-        router.push("/welcome");
+        router.push("/profile");
       }, 1000);
     } catch {
       setSnackbarMessage("Sign up failed. Please try again.");
