@@ -109,8 +109,7 @@ const SignIn = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       console.log("Sign in with:", email, password);
-      setSnackbarMessage("Sign in successful!");
-      setSnackbarVisible(true);
+      
 
       // Navigate after successful login
       setTimeout(() => {

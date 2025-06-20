@@ -411,8 +411,9 @@ const OTP = () => {
                 // Handle OTP verification logic
                 Keyboard.dismiss();
                 console.log("Verifying OTP...");
-                // Use dismissTo to navigate back to a specific screen
-                router.dismissTo("/homepage");
+                // Reset the navigation stack and go to homepage
+                router.dismissAll();
+                router.replace("/homepage");
               }
             }}
           />
