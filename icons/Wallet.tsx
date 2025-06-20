@@ -1,15 +1,9 @@
-import * as React from "react"
-import Svg, { G, Path, Defs, ClipPath, SvgProps } from "react-native-svg"
+import * as React from "react";
+import Svg, { ClipPath, Defs, G, Path, SvgProps } from "react-native-svg";
 
 function Wallet(props: SvgProps) {
   return (
-    <Svg
-      width={26}
-      height={25}
-      viewBox="0 0 26 25"
-      fill="none"
-      {...props}
-    >
+    <Svg width={26} height={25} viewBox="0 0 26 25" fill="none" {...props}>
       <G
         clipPath="url(#clip0_1098_28)"
         stroke={props.stroke || "#3A3A3A"}
@@ -29,7 +23,7 @@ function Wallet(props: SvgProps) {
         </ClipPath>
       </Defs>
     </Svg>
-  )
+  );
 }
 
-export default Wallet
+export default Wallet;

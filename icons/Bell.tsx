@@ -1,16 +1,9 @@
-import * as React from "react"
-import Svg, { Path, SvgProps } from "react-native-svg"
-
+import * as React from "react";
+import Svg, { Path, SvgProps } from "react-native-svg";
 
 function Bell(props: SvgProps) {
   return (
-    <Svg
-      width={21}
-      height={25}
-      viewBox="0 0 21 25"
-      fill="none"
-      {...props}
-    >
+    <Svg width={21} height={25} viewBox="0 0 21 25" fill="none" {...props}>
       <Path
         d="M13.545 20.864A3.146 3.146 0 0110.41 24a3.146 3.146 0 01-3.136-3.136"
         stroke={props.stroke || "#3A3A3A"}
@@ -25,7 +18,7 @@ function Bell(props: SvgProps) {
         strokeLinecap="square"
       />
     </Svg>
-  )
+  );
 }
 
-export default Bell
+export default Bell;

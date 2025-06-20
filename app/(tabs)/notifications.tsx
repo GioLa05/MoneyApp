@@ -1,22 +1,22 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { Text, View } from "react-native";
 
 const Notifications = () => {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: '#F9F9F9',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "#F9F9F9",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Text
         style={{
-          fontFamily: 'Montserrat',
-          fontWeight: '700',
+          fontFamily: "Montserrat",
+          fontWeight: "700",
           fontSize: 24,
-          color: '#3A3A3A',
+          color: "#3A3A3A",
         }}
       >
         Notifications

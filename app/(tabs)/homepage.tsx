@@ -1,8 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Image, Text, View } from "react-native";
+import React, { useContext } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { DrawerContext } from "./_layout";
 
-const homepage = () => {
+const Homepage = () => {
+  const drawerContext = useContext(DrawerContext);
+
+  const handleBurgerPress = () => {
+    drawerContext?.openDrawer();
+  };
+
   return (
     <View
       style={{
@@ -10,18 +17,25 @@ const homepage = () => {
         flex: 1,
       }}
     >
-      <Image
-        source={require("../../assets/images/whiteBurgerMenu.png")}
+      <TouchableOpacity
+        onPress={handleBurgerPress}
         style={{
-          width: 28,
-          height: 30,
           position: "absolute",
           top: 70,
           left: 30,
-          resizeMode: "contain",
           zIndex: 1,
+          padding: 5,
         }}
-      />
+      >
+        <Image
+          source={require("../../assets/images/whiteBurgerMenu.png")}
+          style={{
+            width: 28,
+            height: 30,
+            resizeMode: "contain",
+          }}
+        />
+      </TouchableOpacity>
       <Image
         source={require("../../assets/images/profilePicture.png")}
         style={{
@@ -198,4 +212,4 @@ const homepage = () => {
   );
 };
 
-export default homepage;
+export default Homepage;
