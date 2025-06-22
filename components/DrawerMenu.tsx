@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import WhiteButton from "./WhiteButton";
+import { router } from "expo-router";
 
 type Props = {
   isVisible: boolean;
@@ -61,7 +63,7 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
             style={{
               width: 60,
               height: 60,
-              borderRadius: 30,
+              borderRadius: 0,
               marginRight: 15,
             }}
           />
@@ -95,39 +97,17 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
         </View>
 
         {/* Sign Out Button */}
-        <View style={{ marginBottom: 50 }}>
-          <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              borderColor: "#2B47FC",
-              borderRadius: 25,
-              paddingVertical: 15,
-              paddingHorizontal: 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+        <View
+          style={{
+            paddingBottom: 80,
+          }}
+        >
+          <WhiteButton
+            title="Sign Out"
+            onPress={() => {
+              router.replace("/welcome"); 
             }}
-          >
-            <Text
-              style={{
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: 16,
-                color: "#2B47FC",
-                marginRight: 10,
-              }}
-            >
-              Sign Out
-            </Text>
-            <Image
-              source={require("../assets/images/rightArrow.png")}
-              style={{
-                width: 7,
-                height: 12,
-                tintColor: "#2B47FC",
-              }}
-            />
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </>
@@ -136,11 +116,41 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
 
 const MenuItems = () => {
   const menuItems = [
-    { icon: "💳", title: "Payments", color: "#2B47FC" },
-    { icon: "💸", title: "Transactions", color: "#2B47FC" },
-    { icon: "🏦", title: "My Cards", color: "#2B47FC" },
-    { icon: "🎁", title: "Promotions", color: "#2B47FC" },
-    { icon: "💰", title: "Savings", color: "#2B47FC" },
+    {
+      icon: require("../assets/images/paymentsIcon.png"),
+      title: "Payments",
+      color: "#2B47FC",
+      iconWidth: 18,
+      iconHeight: 18,
+    },
+    {
+      icon: require("../assets/images/transactionsIcon.png"),
+      title: "Transactions",
+      color: "#2B47FC",
+      iconWidth: 11,
+      iconHeight: 15,
+    },
+    {
+      icon: require("../assets/images/myCardsIcon.png"),
+      title: "My Cards",
+      color: "#2B47FC",
+      iconWidth: 25,
+      iconHeight: 21,
+    },
+    {
+      icon: require("../assets/images/promotionsIcon.png"),
+      title: "Promotions",
+      color: "#2B47FC",
+      iconWidth: 20,
+      iconHeight: 20,
+    },
+    {
+      icon: require("../assets/images/savingsIcon.png"),
+      title: "Savings",
+      color: "#2B47FC",
+      iconWidth: 18,
+      iconHeight: 21,
+    },
   ];
 
   return (
@@ -158,12 +168,22 @@ const MenuItems = () => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 20, marginRight: 15 }}>{item.icon}</Text>
+            <Image
+              source={item.icon}
+              style={{
+                width: item.iconWidth,
+                height: item.iconHeight,
+                marginRight: 15,
+                tintColor: item.color,
+              }}
+            />
             <Text
               style={{
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: 16,
+                fontFamily: "Montserrat",
+                fontWeight: "400",
+                fontSize: 18,
+                lineHeight: 18,
+                letterSpacing: 0,
                 color: item.color,
               }}
             >
