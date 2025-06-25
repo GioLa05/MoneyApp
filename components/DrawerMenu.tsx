@@ -1,3 +1,4 @@
+import { router, usePathname } from "expo-router";
 import React from "react";
 import {
   Image,
@@ -7,7 +8,6 @@ import {
   View,
 } from "react-native";
 import WhiteButton from "./WhiteButton";
-import { router } from "expo-router";
 
 type Props = {
   isVisible: boolean;
@@ -45,7 +45,6 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
           backgroundColor: "#FFFFFF",
           zIndex: 1000,
           paddingTop: 60,
-          paddingHorizontal: 30,
           borderTopRightRadius: 20,
           borderBottomRightRadius: 20,
         }}
@@ -56,6 +55,7 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 40,
+            paddingHorizontal: 30,
           }}
         >
           <Image
@@ -72,7 +72,7 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
               style={{
                 fontFamily: "Montserrat",
                 fontWeight: "700",
-                fontSize: 18,
+                fontSize: 16,
                 color: "#000000",
               }}
             >
@@ -80,10 +80,10 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
             </Text>
             <Text
               style={{
-                fontFamily: "Inter",
+                fontFamily: "Montserrat",
                 fontWeight: "400",
-                fontSize: 14,
-                color: "#3A3A3A",
+                fontSize: 15,
+                color: "#000000",
               }}
             >
               @chyaber02
@@ -100,12 +100,13 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
         <View
           style={{
             paddingBottom: 80,
+            paddingHorizontal: 30,
           }}
         >
           <WhiteButton
             title="Sign Out"
             onPress={() => {
-              router.replace("/welcome"); 
+              router.replace("/welcome");
             }}
           />
         </View>
@@ -115,6 +116,9 @@ const DrawerMenu = ({ isVisible, onClose }: Props) => {
 };
 
 const MenuItems = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const pathname = usePathname();
+
   const menuItems = [
     {
       icon: require("../assets/images/paymentsIcon.png"),
@@ -122,6 +126,7 @@ const MenuItems = () => {
       color: "#2B47FC",
       iconWidth: 18,
       iconHeight: 18,
+      route: "/(tabs)/homepage", // For now, navigate to homepage for payments
     },
     {
       icon: require("../assets/images/transactionsIcon.png"),
@@ -129,6 +134,7 @@ const MenuItems = () => {
       color: "#2B47FC",
       iconWidth: 11,
       iconHeight: 15,
+      route: "/transactions", // For now, navigate to transactions for transactions
     },
     {
       icon: require("../assets/images/myCardsIcon.png"),
@@ -136,6 +142,7 @@ const MenuItems = () => {
       color: "#2B47FC",
       iconWidth: 25,
       iconHeight: 21,
+      route: "/mycards", // For now, navigate to profile for cards
     },
     {
       icon: require("../assets/images/promotionsIcon.png"),
@@ -143,6 +150,7 @@ const MenuItems = () => {
       color: "#2B47FC",
       iconWidth: 20,
       iconHeight: 20,
+      route: "/(tabs)/homepage", // For now, navigate to homepage for promotions
     },
     {
       icon: require("../assets/images/savingsIcon.png"),
@@ -150,56 +158,71 @@ const MenuItems = () => {
       color: "#2B47FC",
       iconWidth: 18,
       iconHeight: 21,
+      route: "/(tabs)/homepage", // For now, navigate to homepage for savings
     },
   ];
 
   return (
     <View>
-      {menuItems.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingVertical: 20,
-            borderBottomWidth: index < menuItems.length - 1 ? 1 : 0,
-            borderBottomColor: "#F0F0F0",
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+      {menuItems.map((item, index) => {
+        // Always show Payments as active, others based on route or selection
+        const isActive =
+          item.title === "Payments" ||
+          pathname === item.route ||
+          selectedIndex === index;
+
+        return (
+          <TouchableOpacity
+            key={index}
+            onPress={() => {
+              setSelectedIndex(index);
+              if (item.route) {
+                router.push(item.route as any);
+              }
+            }}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingVertical: 14,
+              paddingHorizontal: 32,
+              backgroundColor: isActive ? "#F2F4F8" : "transparent",
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={item.icon}
+                style={{
+                  width: item.iconWidth,
+                  height: item.iconHeight,
+                  marginRight: 15,
+                  tintColor: item.color,
+                }}
+              />
+              <Text
+                style={{
+                  fontFamily: "Montserrat",
+                  fontWeight: "400",
+                  fontSize: 18,
+                  lineHeight: 18,
+                  letterSpacing: 0,
+                  color: item.color,
+                }}
+              >
+                {item.title}
+              </Text>
+            </View>
             <Image
-              source={item.icon}
+              source={require("../assets/images/rightArrow.png")}
               style={{
-                width: item.iconWidth,
-                height: item.iconHeight,
-                marginRight: 15,
+                width: 7,
+                height: 12,
                 tintColor: item.color,
               }}
             />
-            <Text
-              style={{
-                fontFamily: "Montserrat",
-                fontWeight: "400",
-                fontSize: 18,
-                lineHeight: 18,
-                letterSpacing: 0,
-                color: item.color,
-              }}
-            >
-              {item.title}
-            </Text>
-          </View>
-          <Image
-            source={require("../assets/images/rightArrow.png")}
-            style={{
-              width: 7,
-              height: 12,
-              tintColor: item.color,
-            }}
-          />
-        </TouchableOpacity>
-      ))}
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };

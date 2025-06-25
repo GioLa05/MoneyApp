@@ -154,6 +154,7 @@ const Homepage = () => {
           padding: 44,
           borderRadius: 40,
           marginHorizontal: 40,
+          overflow: "hidden",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
